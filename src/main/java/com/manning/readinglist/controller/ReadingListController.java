@@ -1,5 +1,9 @@
-package com.manning.readinglist;
+package com.manning.readinglist.controller;
 
+import com.manning.readinglist.entity.Book;
+import com.manning.readinglist.entity.Reader;
+import com.manning.readinglist.property.AmazonProperties;
+import com.manning.readinglist.repository.ReadingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,25 +20,30 @@ import java.util.List;
 @RequestMapping("/")
 public class ReadingListController {
 
-    private static final String reader = "craig";
     private ReadingListRepository readingListRepository;
+    private AmazonProperties amazonProperties;
 
     @Autowired
-    public ReadingListController(ReadingListRepository readingListRepository) {
+    public ReadingListController(
+            ReadingListRepository readingListRepository,
+            AmazonProperties amazonProperties) {
         this.readingListRepository = readingListRepository;
+        this.amazonProperties = amazonProperties;
     }
 
     @GetMapping
-    public String readersBooks(Model model) {
+    public String readersBooks(Reader reader, Model model) {
         List<Book> readingList = readingListRepository.findByReader(reader);
         if (readingList != null) {
             model.addAttribute("books", readingList);
+            model.addAttribute("reader", reader);
+            model.addAttribute("amazonID", amazonProperties.getAssociateId());
         }
         return "readingList";
     }
 
     @PostMapping
-    public String addToReadinglist(Book book) {
+    public String addToReadinglist(Reader reader, Book book) {
         book.setReader(reader);
         readingListRepository.save(book);
         return "redirect:/";

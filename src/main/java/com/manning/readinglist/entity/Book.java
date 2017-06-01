@@ -1,6 +1,5 @@
-package com.manning.readinglist;
+package com.manning.readinglist.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +19,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String reader;
+    private Reader reader;
     private String isbn;
     private String title;
     private String author;
