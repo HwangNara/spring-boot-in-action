@@ -26,9 +26,18 @@ public class Reader implements UserDetails {
     private String fullname;
     private String password;
 
+    public Reader() {
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_READER"));
+    }
+
+    public Reader(String username, String fullname, String password) {
+        this.username = username;
+        this.fullname = fullname;
+        this.password = password;
     }
 
     @Override
